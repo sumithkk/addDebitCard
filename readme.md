@@ -6,7 +6,7 @@
 
  $ npm install
  
-# Start webpack-dev-server at port 8080
+# Start webpack-dev-server at port 3001
 
  $ npm run start
  

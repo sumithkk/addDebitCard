@@ -6,7 +6,6 @@ import serialize from "serialize-javascript";
 import { Helmet } from "react-helmet";
 import Routes from "../client/Routes";
 import { ServerStyleSheet } from "styled-components";
-// import RajdhaniLite from '../fonts/Rajdhani-Light.ttf';
 import { renderToNodeStream } from "react-dom/server";
 
 export default async (req, res, store, context) => {
@@ -63,14 +62,6 @@ export default async (req, res, store, context) => {
   );
   const stream = sheet.interleaveWithNodeStream(renderToNodeStream(content));
   const helmet = Helmet.renderStatic();
-
-  //   const { beforeHead, afterHead } = await getIndexHtmlParts;
-  //   res.write(`${beforeHead}
-  //     ${helmet.title.toString()}
-  //     ${helmet.meta.toString()}
-  //     ${helmet.link.toString()}
-  //     ${afterHead}<div id="root">
-  // `);
 
   stream.pipe(res, { end: false });
   stream.on("end", () =>

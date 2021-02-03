@@ -3,6 +3,7 @@ import styled from "styled-components";
 import config from "../../config";
 import useDebounce from "../helpers/customHooks";
 import Search from "../components/svgComponents/search";
+import Dropdown from "../components/dropdown";
 
 const Wrapper = styled.div`
   display: flex;
@@ -57,15 +58,17 @@ const SearchBar = styled.div`
     top: 57px;
     left: 0;
     width: 100%;
-    max-height: 365px;
-    overflow-y: scroll;
+    // max-height: 365px;
+    // overflow-y: scroll;
     .dropList {
       display: flex;
       padding: 15px;
       background-color: #24364e;
       color: #92abcf;
       width: 100%;
-
+      &.active {
+        background: #48586f;
+      }
       img {
         margin-right: 20px;
         max-width: 60px;
@@ -82,27 +85,6 @@ const SearchBar = styled.div`
       }
     }
   }
-`;
-const Copy = styled.button`
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-  background: #4e9caf;
-  padding: 10px;
-  text-align: center;
-  border-radius: 5px;
-  color: white;
-`;
-const Redirect = styled.a`
-  padding: 10px;
-  border: none;
-  text-decoration: none;
-  background: #4e9caf;
-  padding: 10px;
-  margin: 0 10px;
-  text-align: center;
-  border-radius: 5px;
-  color: white;
 `;
 
 const Toast = styled.div`
@@ -160,11 +142,14 @@ const BounceBall = styled.div`
 const MainSection = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState([]);
+  const [cursor, setCursor] = useState(0);
   const [isSearching, setIsSearching] = useState(false);
   const [showDrop, toggleDrop] = useState(false);
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const [searchError, setSearchError] = useState("");
   const toastRef = useRef();
+  // const [elRefs, setElRefs] = useState([]);
+  // const [arrLength, setArrLength] = useState(0);
 
   const getGifs = async (query) => {
     let url = `http://api.giphy.com/v1/gifs/search?q=${query}&api_key=${config.apikey}&limit=5`;
@@ -172,11 +157,13 @@ const MainSection = () => {
     const json = await res.json();
     if (json.meta.status === 200) {
       setResults(json.data);
+      // setArrLength(json.data.length);
       setIsSearching(false);
       toggleDrop(true);
     } else {
       setSearchError(json.error);
       setIsSearching(false);
+      // setArrLength(0);
     }
   };
 
@@ -202,6 +189,27 @@ const MainSection = () => {
     }, 1000);
   };
 
+  const handleKeyDown = (e) => {
+    console.log(e);
+    // arrow up/down button should select next/previous list element
+    if (e.keyCode === 38 && cursor > 0) {
+      // elRefs[cursor - 1].current.focus();
+      setCursor(cursor - 1);
+    } else if (e.keyCode === 40 && cursor < results.length - 1) {
+      // elRefs[cursor + 1].current.focus();
+      setCursor(cursor + 1);
+    }
+  };
+
+  // useEffect(() => {
+  //   // add or remove refs
+  //   setElRefs((elRefs) =>
+  //     Array(arrLength)
+  //       .fill()
+  //       .map((_, i) => elRefs[i] || createRef())
+  //   );
+  // }, [arrLength]);
+
   return (
     <Wrapper>
       <SearchBar>
@@ -211,6 +219,7 @@ const MainSection = () => {
               <input
                 placeholder="Search Gif's"
                 name="search"
+                onKeyDown={(e) => handleKeyDown(e)}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </label>
@@ -224,34 +233,15 @@ const MainSection = () => {
           )}
 
           {showDrop && (
-            <div className="dropdown">
-              {results.length > 0 ? (
-                results.map((result, i) => (
-                  <div className="dropList" key={i}>
-                    <img
-                      src={result.images.preview_gif.url}
-                      alt="superheroList"
-                    />
-                    <div className="listDesc">
-                      <h1>{result.title}</h1>
-                      <div>
-                        <Copy onClick={() => handleCopy(result.url)}>Copy</Copy>
-                        <Redirect type="button" href={result.url}>
-                          Redirect
-                        </Redirect>
-                      </div>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div style={{ padding: "20px", color: "#fff" }}>
-                  No results found
-                </div>
-              )}
-            </div>
+            <Dropdown
+              results={results}
+              handleCopy={handleCopy}
+              cursor={cursor}
+            />
           )}
         </div>
       </SearchBar>
+      {searchError !== "" && <div>{searchError}</div>}
       <Toast ref={toastRef}>Url Copied to Clipboard</Toast>
     </Wrapper>
   );
