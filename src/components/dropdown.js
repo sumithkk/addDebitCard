@@ -1,54 +1,71 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
+import Arrow from "../components/svgComponents/up-arrow";
 
-const Copy = styled.button`
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-  background: #4e9caf;
-  padding: 10px;
-  text-align: center;
-  border-radius: 5px;
-  color: white;
-`;
-const Redirect = styled.a`
-  padding: 10px;
-  border: none;
-  text-decoration: none;
-  background: #4e9caf;
-  padding: 10px;
-  margin: 0 10px;
-  text-align: center;
-  border-radius: 5px;
-  color: white;
-`;
+const Dropdown = (props) => {
+  let list = props.list;
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [header, setHeader] = useState(props.header);
+  const items = listToMapWithProperties(list, header);
 
-const Dropdown = ({ results, handleCopy, cursor }) => {
+  // Function to make a Map with properties: selected, item and id from List
+  function listToMapWithProperties(list, header) {
+    let items = [];
+    for (let i = 0; i < list.length; i++) {
+      var newItem = new Object();
+
+      if (header === list[i]) {
+        newItem.selected = true;
+      } else {
+        newItem.selected = false;
+      }
+      newItem.item = list[i];
+      newItem.id = i;
+
+      items.push(newItem);
+    }
+    return items;
+  }
+
+  const toggleList = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const selectItem = (item) => {
+    setHeader(item.item);
+    setIsMenuOpen(!isMenuOpen);
+    if (props.header === "MM") {
+      props.handleInputChange("expiryM", item.item);
+    } else {
+      props.handleInputChange("expiryY", item.item);
+    }
+  };
+
   return (
-    <div className="dropdown">
-      {results.length > 0 ? (
-        results.map((result, i) => (
-          <div key={i} className={`dropList ${cursor === i ? "active" : null}`}>
-            <img src={result.images.preview_gif.url} alt="gifImg" />
-            <div className="listDesc">
-              <h1>{result.title}</h1>
-              <div>
-                <Copy
-                  type="button"
-                  // ref={elRefs[i]}
-                  onClick={() => handleCopy(result.url)}
-                >
-                  Copy
-                </Copy>
-                <Redirect href={result.url}>Redirect</Redirect>
-              </div>
-            </div>
+    <div className="dropdown-container">
+      <div className="dropdown-menu">
+        <button type="button" className="dropdown-header" onClick={toggleList}>
+          <div className="dropdown-title">{header}</div>
+          <Arrow className={!isMenuOpen ? "arrow-up" : ""} />
+        </button>
+        {isMenuOpen && (
+          <div className="dropdown-menu-items">
+            {items.map((item) => (
+              <button
+                type="button"
+                className={`dropdown-menu-item ${
+                  item.id % 2 ? "" : "grey-background"
+                }`}
+                key={item.id}
+                onClick={() => selectItem(item)}
+              >
+                {item.item}
+              </button>
+            ))}
           </div>
-        ))
-      ) : (
-        <div style={{ padding: "20px", color: "#fff" }}>No results found</div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
+
 export default Dropdown;

@@ -36,11 +36,11 @@ export default async (req, res, store, context) => {
   }
   </style>
       <meta charset="utf-8">
-      <title>Search Gif's</title>
+      <title>Add Card Deails</title>
       <link rel="shortcut icon" href="/favicon.ico" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="theme-color" content="#f2f2f2">
-      <meta name="description" content="search gif's" />
+      <meta name="description" content="ad card details" />
       <link rel="apple-touch-icon" href="logo192.png" />
       <style>
       #root, body {
