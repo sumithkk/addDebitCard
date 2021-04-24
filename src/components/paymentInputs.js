@@ -80,6 +80,11 @@ const PaymentInputs = ({ showToast, setErr }) => {
       showToast(
         "Form Successfully Submited" + " " + "Data : " + JSON.stringify(data)
       );
+      setCardNumber("");
+      setName("");
+      setExpiryM("");
+      setExpiryY("");
+      setCvv("");
     }, 3000);
   };
 
@@ -118,6 +123,7 @@ const PaymentInputs = ({ showToast, setErr }) => {
               name="name"
               id="name"
               component="input"
+              value={name}
               onFocus={() => setFocus("name")}
               onChange={(e) => handleInputChange("name", e)}
               type="text"
@@ -129,7 +135,7 @@ const PaymentInputs = ({ showToast, setErr }) => {
               <label htmlFor="expiry">Expires</label>
               <div style={{ display: "flex", margin: "5px 0" }}>
                 <Dropdown
-                  header="MM"
+                  header={expiryM || "MM"}
                   handleInputChange={handleDropdown}
                   list={[
                     "01",
@@ -147,7 +153,7 @@ const PaymentInputs = ({ showToast, setErr }) => {
                   ]}
                 />
                 <Dropdown
-                  header="YY"
+                  header={expiryY || "YY"}
                   handleInputChange={handleDropdown}
                   list={["2021", "2022", "2023", "2024", "2025", "2026"]}
                 />

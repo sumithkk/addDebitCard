@@ -11,7 +11,7 @@
         "test:coverage": "jest --coverage"
     },
     "main": "src/index.js",
-    "repository": "https://github.com/xxczaki/styled-react-boilerplate",
+    "repository": "https://github.com/sumithkk/addDebitCard.git",
     "author": "Sumith",
     "license": "MIT",
     "devDependencies": {
