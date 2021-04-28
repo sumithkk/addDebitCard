@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import Card from "../components/card";
 import { formatCreditCardNumber, formatCVV } from "./cardUtils";
 import Dropdown from "../components/dropdown";
@@ -7,8 +7,8 @@ import Loading from "./loader";
 const PaymentInputs = ({ showToast, setErr }) => {
   const [cardNumber, setCardNumber] = React.useState("");
   const [name, setName] = React.useState("");
-  const [expiryM, setExpiryM] = React.useState("");
-  const [expiryY, setExpiryY] = React.useState("");
+  const [expiryM, setExpiryM] = React.useState("MM");
+  const [expiryY, setExpiryY] = React.useState("YY");
   const [expiry, setExpiry] = React.useState("");
   const [cvv, setCvv] = React.useState("");
   const [focused, setFocus] = React.useState("");
@@ -82,8 +82,8 @@ const PaymentInputs = ({ showToast, setErr }) => {
       );
       setCardNumber("");
       setName("");
-      setExpiryM("");
-      setExpiryY("");
+      setExpiryM("MM");
+      setExpiryY("YY");
       setCvv("");
     }, 3000);
   };
@@ -135,7 +135,7 @@ const PaymentInputs = ({ showToast, setErr }) => {
               <label htmlFor="expiry">Expires</label>
               <div style={{ display: "flex", margin: "5px 0" }}>
                 <Dropdown
-                  header={expiryM || "MM"}
+                  header={expiryM}
                   handleInputChange={handleDropdown}
                   list={[
                     "01",
@@ -153,13 +153,13 @@ const PaymentInputs = ({ showToast, setErr }) => {
                   ]}
                 />
                 <Dropdown
-                  header={expiryY || "YY"}
+                  header={expiryY}
                   handleInputChange={handleDropdown}
                   list={["2021", "2022", "2023", "2024", "2025", "2026"]}
                 />
               </div>
             </div>
-            <div className="">
+            <div className="cvvInput">
               <div className="label" htmlFor="name">
                 CVV
               </div>

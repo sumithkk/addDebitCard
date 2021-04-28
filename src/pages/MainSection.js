@@ -13,14 +13,24 @@ const Wrapper = styled.div`
   padding: 135px 50px 50px;
   margin: 0 auto;
   margin-top: 230px;
+  max-width: 550px;
 
+  @media only screen and (max-width: 600px) {
+    padding: 75px 15px 50px;
+  }
   @media only screen and (min-width: 600px) {
-    width: 28%;
+    width: 70%;
+  }
+  @media only screen and (min-width: 769px) {
+    width: 50%;
   }
 `;
 
 const Toast = styled.div`
   position: fixed;
+  display: flex;
+  flex-wrap: wrap;
+  text-wrap: wrap;
   padding: 20px;
   background: #3e3e3e;
   color: #fff;

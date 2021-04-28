@@ -17,6 +17,7 @@ html {
 
 body{
   background-color: #D4EBFD;
+  margin: 0;
 }
 
 h1 {
@@ -166,6 +167,18 @@ button[disabled]{
     opacity: 0;
   }
 }
-
+@media only screen and (max-width: 600px) {
+  .dropdown-header, .cvvInput input {
+    width: 90px !important;
+  }
+}
+@media only screen and (max-width: 320px) {
+  .dropdown-header, .cvvInput input {
+    width: 87px !important;
+  }
+  .dropdown-menu {
+    margin-right: 5px;
+  }
+}
 
 `;

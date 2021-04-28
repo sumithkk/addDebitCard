@@ -23,6 +23,25 @@ const Container = styled.div`
     transition: all 0.4s linear;
     width: 380px;
   }
+
+  @media only screen and (max-width: 600px) {
+    .rccs {
+      width: 300px;
+    }
+    .rccs__card {
+      height: 180px; 
+      width: 300px;
+    }
+  }
+  @media only screen and (max-width: 320px) {
+    .rccs {
+      width: 280px;
+    }
+    .rccs__card {
+      height: 180px; 
+      width: 280px;
+    }
+  }
   .rccs__card--front,
   .rccs__card--back {
     -webkit-backface-visibility: hidden;
